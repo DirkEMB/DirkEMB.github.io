@@ -1,5 +1,13 @@
-var weatherList = ["barcelona_spain_3128760",
-                   "madrid_spain_3117735"];
+var weatherList = [
+  "barcelona_spain_3128760",
+  "madrid_spain_3117735",
+  "london_united-kingdom_2643743",
+  "paris_france_2988507",
+  "toulouse_france_2972315",
+  "milan_italy_3173435",
+  "brussels_belgium_2800866",
+  "amsterdam_netherlands_2759794"
+];
 var weatherDiv;
 window.addEventListener('load', (event) => {
   console.log('page is fully loaded');
