@@ -17,3 +17,9 @@ section {
 section div:last-child {
   display: none 
 }
+
+.weatherFrame {
+   border-style: none;
+    width: 216px; 
+    height: 300px;
+}
