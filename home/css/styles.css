@@ -6,7 +6,7 @@ body {
 section {
     display: inline-block;
     margin: 0px 0px 2px 0px;
-    background-color: #F0F0F0;
+    
     
     
     
@@ -19,8 +19,10 @@ section div:last-child {
 }
 
 .weatherFrame {
+    
    border-style: none;
     width: 216px; 
     height: 300px;
     margin: 1px;
+    background-color: #F0F0F0;
 }
