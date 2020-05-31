@@ -6,7 +6,8 @@ window.addEventListener('load', (event) => {
   weatherList.forEach(createWeatherFrame);
 });
 createWeatherFrame = function(link) {
-  var newEl = document.createElement("div");
-  newEl.innerHTML = link;
+  var newEl = document.createElement("iframe");
+  newEl.classList.add("weatherFrame");
+  newEl.src="https://www.google.com";
   weatherDiv.appendChild(newEl);
 };
