@@ -15,8 +15,8 @@ section {
 
 .weatherFrame { 
    border-style: none;
-    width: 460px; 
-    height: 594px;
+    width: 290px; 
+    height: 360px;
     margin: 1px;
     background-color: #F0F0F0;
 }
