@@ -7,7 +7,13 @@ var weatherList = [
   "milan_italy_3173435",
   "brussels_belgium_2800866",
   "ghent_belgium_2797656",
-  "amsterdam_netherlands_2759794"
+  "amsterdam_netherlands_2759794",
+  "singapore_singapore_1880252",
+  "melbourne_australia_2158177",
+  "sydney_australia_2147714",
+  "hong-kong_hong-kong-s.a.r_1819727",
+  "dubai_united-arab-emirates_292223",
+  "kuwait-city_kuwait_285787"
 ];
 var weatherDiv;
 getQueryVariable = function(variable)
