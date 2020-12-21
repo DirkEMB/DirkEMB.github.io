@@ -19,6 +19,7 @@ section {
     height: 300px;
     margin: 1px;
     background-color: #F0F0F0;
+    display: block;
 }
 .weatherFrame2 { 
    border-style: none;
