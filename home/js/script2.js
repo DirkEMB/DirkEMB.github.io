@@ -16,6 +16,7 @@ window.addEventListener('load', (event) => {
   weatherFrame = document.getElementById("weatherFrame");
   weatherDD.addEventListener('change', updateZone);
   weatherList.forEach(addZone);
+  updateZone();
 });
 
 addZone = function(zone) {
