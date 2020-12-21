@@ -9,18 +9,24 @@ var weatherList = [
 var weatherDiv;
 var weatherDD;
 var weatherFrame;
+var timeTable;
 
 window.addEventListener('load', (event) => {
   weatherDiv = document.getElementById("weather");
   weatherDD = document.getElementById("zones");
   weatherFrame = document.getElementById("weatherFrame");
+  timeTable = document.getElementById("timeTable");
   weatherDD.addEventListener('change', updateZone);
   weatherList.forEach(addZone);
   updateZone();
-  var myTime = moment().tz("Europe/London").format();
-  console.log(myTime);
+  updateTime();
+  mytime=setTimeout(updateTime,30000);
   
 });
+
+updateTime = function() {
+  console.log(new Date());
+};
 
 addZone = function(zone) {
   var newEl = document.createElement("option");
