@@ -4,7 +4,31 @@ var weatherList = [
   {name: "Madrid",
    link:"madrid_spain_3117735"},
   {name: "London",
-   link:"london_united-kingdom_2643743"}
+   link:"london_united-kingdom_2643743"},
+  {name: "Paris",
+   link:"paris_france_2988507"},
+  {name: "Toulouse",
+   link:"toulouse_france_2972315"},
+  {name: "Milan",
+   link:"milan_italy_3173435"},
+  {name: "Brussels",
+   link:"brussels_belgium_2800866"},
+  {name: "Ghent",
+   link:"ghent_belgium_2797656"},
+  {name: "Amsterdam",
+   link:"amsterdam_netherlands_2759794"},
+  {name: "Singapore",
+   link:"singapore_singapore_1880252"},
+  {name: "Melbourne",
+   link:"melbourne_australia_2158177"},
+  {name: "Sydney",
+   link:"sydney_australia_2147714"},
+  {name: "Hong Kong",
+   link:"hong-kong_hong-kong-s.a.r_1819727"},
+  {name: "Dubai",
+   link:"dubai_united-arab-emirates_292223"},
+  {name: "Kuwait",
+   link:"kuwait-city_kuwait_285787"}
 ];
 var weatherDiv;
 var weatherDD;
