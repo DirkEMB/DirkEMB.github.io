@@ -27,7 +27,7 @@ window.addEventListener('load', (event) => {
 updateTime = function() {
   for (var i = 0, row; row = timeTable.rows[i]; i++) {
     var myZone = row.cells[1].innerHTML;
-    var myTime = moment().tz(myZone).format();
+    var myTime = moment().tz(myZone).format("HH:mm");
     row.cells[2].innerHTML = myTime;
    }  
 };
