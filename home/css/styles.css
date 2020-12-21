@@ -9,8 +9,9 @@ section {
 
 
 
-.weatherFrame div:last-child {
-  display: none 
+#zones {
+    display: block;
+    width: 50px;
 }
 
 .weatherFrame { 
