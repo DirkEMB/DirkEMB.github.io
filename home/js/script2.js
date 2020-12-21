@@ -17,6 +17,9 @@ window.addEventListener('load', (event) => {
   weatherDD.addEventListener('change', updateZone);
   weatherList.forEach(addZone);
   updateZone();
+  var myTime = moment().tz("Europe/London").format();
+  console.log(myTime);
+  
 });
 
 addZone = function(zone) {
