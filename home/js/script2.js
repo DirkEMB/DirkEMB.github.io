@@ -25,7 +25,11 @@ window.addEventListener('load', (event) => {
 });
 
 updateTime = function() {
-  timeTable.getElementsByTagName("tr").forEach(console.log);
+  for (var i = 0, row; row = timeTable.rows[i]; i++) {
+    var myZone = row.cells[1].innerHTML;
+    var myTime = moment().tz(myZone).format();
+    row.cells[2].innerHTML = myTime;
+   }  
 };
 
 addZone = function(zone) {
