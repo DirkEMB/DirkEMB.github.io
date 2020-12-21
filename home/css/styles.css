@@ -11,6 +11,11 @@ section {
  border: 1px solid #F0F0F0;   
 }
 
+#timeTable td {
+ background-color: #a0a0a0;   
+    
+}
+
 #zones {
     display: block;
     width: 290px;
