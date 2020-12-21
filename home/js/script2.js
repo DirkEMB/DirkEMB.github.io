@@ -8,13 +8,13 @@ var weatherList = [
 ];
 var weatherDiv;
 var weatherDD;
+var weatherFrame;
 
 window.addEventListener('load', (event) => {
   weatherDiv = document.getElementById("weather");
   weatherDD = document.getElementById("zones");
-  weatherDD.addEventListener('change', (event) => {
-    console.log(weatherDD.value);
-  });
+  weatherFrame = document.getElementById("weatherFrame");
+  weatherDD.addEventListener('change', updateZone);
   weatherList.forEach(addZone);
 });
 
@@ -23,4 +23,11 @@ addZone = function(zone) {
   newEl.value = zone.link;
   newEl.innerHTML = zone.name;
   weatherDD.appendChild(newEl);
+};
+
+updateZone = function() {
+  var mySource = "https://www.meteoblue.com/en/weather/widget/daily/;"
+  mySource += weatherDD.value;
+  mySource += "?geoloc=fixed&days=5&tempunit=CELSIUS&windunit=KILOMETER_PER_HOUR&precipunit=MILLIMETER&coloured=coloured&pictoicon=0&pictoicon=1&maxtemperature=0&maxtemperature=1&mintemperature=0&mintemperature=1&windspeed=0&windspeed=1&windgust=0&winddirection=0&winddirection=1&uv=0&humidity=0&precipitation=0&precipitation=1&precipitationprobability=0&precipitationprobability=1&spot=0&pressure=0&layout=light";
+  weatherFrame.src = mySource;
 };
