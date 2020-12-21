@@ -12,6 +12,9 @@ var weatherDD;
 window.addEventListener('load', (event) => {
   weatherDiv = document.getElementById("weather");
   weatherDD = document.getElementById("zones");
+  weatherDD.addEventListener('change', (event) => {
+    console.log(weatherDD.value);
+  });
   weatherList.forEach(addZone);
 });
 
