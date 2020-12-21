@@ -19,5 +19,5 @@ addZone = function(zone) {
   var newEl = document.createElement("option");
   newEl.value = zone.link;
   newEl.innerHTML = zone.name;
-  weatherDiv.appendChild(newEl);
+  weatherDD.appendChild(newEl);
 };
