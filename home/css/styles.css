@@ -7,7 +7,9 @@ section {
      margin: 2px;
 }
 
-
+#timeTable {
+ border: 1px solid #F0F0F0;   
+}
 
 #zones {
     display: block;
