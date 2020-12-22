@@ -44,13 +44,13 @@ window.addEventListener('load', (event) => {
   weatherList.forEach(addZone);
   updateZone();
   updateTime();
-  setTimeout(updateTime,30000);
+  setInterval(updateTime,30000);
   
 });
 
 window.addEventListener('focus', (event) => {
    updateTime();
-   setTimeout(updateTime,30000);
+   setInterval(updateTime,30000);
 });
 
 updateTime = function() {
