@@ -49,7 +49,8 @@ window.addEventListener('load', (event) => {
 });
 
 window.addEventListener('focus', (event) => {
-  console.log("focus");
+   updateTime();
+   mytime=setTimeout(updateTime,30000);
 });
 
 updateTime = function() {
