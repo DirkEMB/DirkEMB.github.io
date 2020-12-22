@@ -48,13 +48,7 @@ window.addEventListener('load', (event) => {
   
 });
 
-//window.addEventListener('focus', (event) => {
-//   updateTime();
-//   setInterval(updateTime,30000);
-//});
-
 updateTime = function() {
-  console.log(moment());
   for (var i = 0, row; row = timeTable.rows[i]; i++) {
     var myZone = row.cells[1].innerHTML;
     var myTime = moment().tz(myZone).format("HH:mm");
