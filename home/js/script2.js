@@ -44,13 +44,13 @@ window.addEventListener('load', (event) => {
   weatherList.forEach(addZone);
   updateZone();
   updateTime();
-  mytime=setTimeout(updateTime,30000);
+  setTimeout(updateTime,30000);
   
 });
 
 window.addEventListener('focus', (event) => {
    updateTime();
-   mytime=setTimeout(updateTime,30000);
+   setTimeout(updateTime,30000);
 });
 
 updateTime = function() {
@@ -58,6 +58,7 @@ updateTime = function() {
     var myZone = row.cells[1].innerHTML;
     var myTime = moment().tz(myZone).format("HH:mm");
     row.cells[2].innerHTML = myTime;
+    console.log(moment());
    }  
 };
 
