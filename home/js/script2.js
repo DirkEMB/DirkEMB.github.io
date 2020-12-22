@@ -48,6 +48,10 @@ window.addEventListener('load', (event) => {
   
 });
 
+window.addEventListener('focus', (event) => {
+  console.log("focus");
+});
+
 updateTime = function() {
   for (var i = 0, row; row = timeTable.rows[i]; i++) {
     var myZone = row.cells[1].innerHTML;
