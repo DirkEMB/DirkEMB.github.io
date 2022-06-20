@@ -18,7 +18,9 @@ var weatherList = [
   {name: "Amsterdam",
    link:"amsterdam_netherlands_2759794"},
   {name: "Munich",
-   link: "munich_germany_2867714"}
+   link: "munich_germany_2867714"},
+  {name: "Berlin",
+   link: "berlin_germany_2950159"}
 ];
 var weatherDiv;
 var weatherDD;
