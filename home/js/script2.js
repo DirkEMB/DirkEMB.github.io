@@ -17,18 +17,8 @@ var weatherList = [
    link:"ghent_belgium_2797656"},
   {name: "Amsterdam",
    link:"amsterdam_netherlands_2759794"},
-  {name: "Singapore",
-   link:"singapore_singapore_1880252"},
-  {name: "Melbourne",
-   link:"melbourne_australia_2158177"},
-  {name: "Sydney",
-   link:"sydney_australia_2147714"},
-  {name: "Hong Kong",
-   link:"hong-kong_hong-kong-s.a.r_1819727"},
-  {name: "Dubai",
-   link:"dubai_united-arab-emirates_292223"},
-  {name: "Kuwait",
-   link:"kuwait-city_kuwait_285787"}
+  {name: "Munich",
+   link: "munich_germany_2867714"}
 ];
 var weatherDiv;
 var weatherDD;
