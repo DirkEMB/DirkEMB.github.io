@@ -16,10 +16,10 @@
       href="favicon.jpg">
  <script>
    function setTitle() {
-      document.title = new Date().toISOString().substr(11, 8) 
+      document.title = new Date().toISOString().substr(11, 5) 
    }
    
-   setTitle()
+   window.setInterval(setTitle,60000)
 </script>
 </head>
 
