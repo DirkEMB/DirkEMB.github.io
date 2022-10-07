@@ -15,7 +15,11 @@
       type="image/jpeg" 
       href="favicon.jpg">
  <script>
-   document.title = 'Hello!'; // New title :)
+   function setTitle() {
+      document.title = (new Date()) 
+   }
+   
+   setTitle()
 </script>
 </head>
 
