@@ -18,8 +18,8 @@
    function setTitle() {
       document.title = new Date().toISOString().substr(11, 5) 
    }
-   
-   window.setInterval(setTitle,60000)
+   setTitle();
+   window.setInterval(setTitle,60000);
 </script>
 </head>
 
