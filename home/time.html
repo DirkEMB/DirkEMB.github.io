@@ -16,7 +16,7 @@
       href="favicon.jpg">
  <script>
    function setTitle() {
-      document.title = (new Date()) 
+      document.title = new Date().toISOString().substr(11, 8) 
    }
    
    setTitle()
