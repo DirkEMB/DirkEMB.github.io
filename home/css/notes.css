@@ -46,8 +46,15 @@ article {
         border 2px solid white;
     }
 
-    textarea {
-        display: block;
-        width: 100%;
+    .note_content {
+        min-height: 5em;
     }
+
+    *[contenteditable="plaintext-only"] {
+        border: none;
+        outline: none;
+        background-color: #fafafa;
+    }
+
+
 }

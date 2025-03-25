@@ -1,14 +1,29 @@
 "use strict";
 
-let db_notes = {};
+var db_notes = {};
 
 db_notes.notes = new Map();
 db_notes.notes.set("21ef6634-d61c-49b4-96a6-a872e2148082", "### hello, markdown!");
 db_notes.notes.set("test", "#golly");
 db_notes.converter = new showdown.Converter();
+db_notes.new_node = function (tag, nodeClass, ...nodes) {
+    const node = document.createElement(tag);
+    if (nodeClass) {
+        node.classList.add(nodeClass)
+    };
+    node.append(...nodes);
+    return node;
+};
+
 db_notes.menu = {
     addArticle: function () {
-        console.log("add an article");
+        let article = db_notes.new_node('article', null, db_notes.new_node('h1', 'ref', self.crypto.randomUUID()), db_notes.new_node("div", 'note_content', "new"));
+        article.dataset.content = '';
+        var original = document.getElementById("content");
+        var clone = original.cloneNode(true);
+        clone.insertBefore(article, clone.getElementsByTagName('article')[0]);
+        original.parentNode.replaceChild(clone, original);
+
     }
 }
 window.addEventListener("load", function () {
@@ -19,7 +34,6 @@ window.addEventListener("load", function () {
         db_notes.menu[ev.target.dataset.function]();
     })
     db_notes.notes.forEach((el, key) => {
-        console.log(el);
         let article = document.createElement("article");
         article.id = key;
         article.dataset.content = el;
@@ -30,6 +44,14 @@ window.addEventListener("load", function () {
         let article_content = document.createElement("div");
         article_content.classList.add('note_content');
         article_content.innerHTML = db_notes.converter.makeHtml(el);
+        article_content.addEventListener('blur', function (ev) {
+            let el = ev.target;
+            if (el.contentEditable && el.contentEditable == 'plaintext-only') {
+                el.parentNode.dataset.content = el.innerHTML;
+                el.innerHTML = db_notes.converter.makeHtml(el.innerHTML);
+                el.contentEditable = false;
+            }
+        });
         article.appendChild(article_content);
         clone.appendChild(article);
     });
@@ -42,21 +64,14 @@ window.addEventListener("load", function () {
 
 window.addEventListener("dblclick", function (ev) {
     let el = ev.target;
+    console.log(el);
     while (el.tagName != 'ARTICLE' && el.tagName != 'BODY') {
         el = el.parentNode;
-        console.log(el.tagName);
     }
     if (el.tagName == 'ARTICLE') {
         let div = el.getElementsByClassName('note_content')[0];
         div.innerHTML = el.dataset.content;
         div.contentEditable = 'plaintext-only';
-        div.addEventListener('blur', function (ev) {
-            let div = ev.target;
-            console.log(div.innerHTML);
-            div.parentNode.dataset.content = div.innerHTML;
-            div.innerHTML = db_notes.converter.makeHtml(div.innerHTML);
-            div.contentEditable = false;
-        });
         div.focus();
 
     };
