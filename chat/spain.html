@@ -9,13 +9,16 @@
     <body>
         <script type="text/javascript">
             var $zoho=$zoho || {};
-            $zoho.salesiq = $zoho.salesiq || {widgetcode:"siqbda4f739db87c970f1dbdeb40d8dff74e2dc059463173b0ead67fa148a5992c7", 
-                                              values:{},
-                                              ready:function(){
-                                                  
-                                              }
-                                             };
-    
+            $zoho.salesiq = $zoho.salesiq || {
+                widgetcode:"siqbda4f739db87c970f1dbdeb40d8dff74e2dc059463173b0ead67fa148a5992c7", 
+                values:{},
+                ready:function(){
+                    $zoho.salesiq.visitor.info({
+                        "CustomerID": "12345678",
+                        "UserType": "Premium"
+                        }); 
+                    }
+                };
             var d=document;
             s=d.createElement("script");
             s.type="text/javascript";
@@ -27,11 +30,7 @@
             d.write("<div id='zsiqwidget'></div>");
         </script>
         <h1>España</h1>
-        <div>with driver_id</div>
-        <script>$zoho.salesiq.visitor.info({
-    "CustomerID": "12345",
-    "UserType": "Premium"
-            });
-});</script>
+        <div>with driver_id v6</div>
+        
     </body>
 </html>
