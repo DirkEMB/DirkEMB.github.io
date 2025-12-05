@@ -15,9 +15,7 @@
                                                   
                                               }
                                              };
-            $zoho.salesiq.ready = function() {
-                $zoho.salesiq.visitor.info({"source_chat": "12345"});
-            };
+    
             var d=document;
             s=d.createElement("script");
             s.type="text/javascript";
@@ -30,5 +28,10 @@
         </script>
         <h1>España</h1>
         <div>with driver_id</div>
+        <script>$zoho.salesiq.visitor.info({
+    "CustomerID": "12345",
+    "UserType": "Premium"
+            });
+});</script>
     </body>
 </html>
