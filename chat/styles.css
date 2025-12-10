@@ -1,13 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 body {
-    font-family: "Open Sans", sans-serif;
+    font-family: "Roboto", sans-serif;
     font-optical-sizing: auto;
     font-weight: 300;
     font-style: normal;
-    font-variation-settings:
-    "wdth" 100;
+    
+    
 }
 
 #zsiqwidget {
     width: 100% !important
 }
+
+#reference {
+    font-size: 0.8em;
+    color: grey;
+    font-weight: 100;
+    text-align: left;
+    width: 100%;
+    margin: 0 0 2px 0;
+    padding: 0.2em;
+    
+}
+
 

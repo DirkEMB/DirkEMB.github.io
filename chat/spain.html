@@ -3,27 +3,25 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-        <title>chat ES</title>
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+        <title>Catcher ES driver chat</title>
         <link rel="stylesheet" href="styles.css" />
-        <script src="script.js"></script>
     </head>
     <body>
-        <h1>España</h1>
-        <div>with driver_id v8</div>
+        <div id="reference">es_driver vX.Y</div>
+        <div id="xy"></div>
         <script type="text/javascript">
+            var config = {
+                widgetcode: "siqbda4f739db87c970f1dbdeb40d8dff74e2dc059463173b0ead67fa148a5992c7",
+                visitorinfo: {
+                    "driver_id": 8993
+                }
+            }
             var $zoho=$zoho || {};
             $zoho.salesiq = $zoho.salesiq || {
-                widgetcode:"siqbda4f739db87c970f1dbdeb40d8dff74e2dc059463173b0ead67fa148a5992c7", 
+                widgetcode:config.widgetcode, 
                 values:{},
                 ready:function(){
-                    $zoho.salesiq.visitor.info({
-                        "CustomerID": "12345678",
-                        "UserType": "Premium"
-                        }); 
+                    $zoho.salesiq.visitor.info(config.visitorinfo); 
                     $zoho.salesiq.chatwindow.visible("show");
                     }
                 };
