@@ -10,16 +10,24 @@
         <script src="script.js"></script>
     </head>
     <body>
+        <h1>España</h1>
+        <div>with driver_id v8</div>
+        <div id="salesiq-chat-container"></div> 
         <script type="text/javascript">
             var $zoho=$zoho || {};
             $zoho.salesiq = $zoho.salesiq || {
                 widgetcode:"siqbda4f739db87c970f1dbdeb40d8dff74e2dc059463173b0ead67fa148a5992c7", 
                 values:{},
                 ready:function(){
+                    $zoho.salesiq.floatbutton.visible("hide");
                     $zoho.salesiq.visitor.info({
                         "CustomerID": "12345678",
                         "UserType": "Premium"
                         }); 
+                    // Renders the chat window inside the specified div element
+                    $zoho.salesiq.chatwindow.visible("show", "salesiq-chat-container");
+                    // Optionally, hide the close button since it's embedded
+                    $zoho.salesiq.chatwindow.closebutton("hide");
                     }
                 };
             var d=document;
@@ -32,8 +40,7 @@
             t.parentNode.insertBefore(s,t);
             d.write("<div id='zsiqwidget'></div>");
         </script>
-        <h1>España</h1>
-        <div>with driver_id v8</div>
+        
         
     </body>
 </html>
