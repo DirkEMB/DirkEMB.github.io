@@ -1,4 +1,7 @@
 var dirk = {};
 dirk.hello = function() {
-    console.log("hello world");
+    return "hello world";
+};
+dirk.double = function(x) {
+    return 2*x;
 };
