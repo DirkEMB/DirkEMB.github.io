@@ -2,6 +2,8 @@ var dirk = {};
 dirk.hello = function() {
     return "hello world";
 };
-dirk.double = function(x) {
+export function dirkdouble(x) 
+{
     return 2*x;
-};
+}
+
