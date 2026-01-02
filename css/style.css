@@ -3,13 +3,14 @@
 body {
     font-family: 'Noto Sants', sans-serif;
     font-weight: 300;
+    font-size: 14px;
 }
 
 h1 {
     color: #78A75A;
     font-family: 'Google Sans Code', sans-serif;
     font-weight: 400;
-    font-size: 24dp;
+    font-size: 200%;
 }
 
 body>h1::before {
@@ -25,7 +26,7 @@ article {
 }
 
 article>h1 {
-    font-size: 16dp;
+    font-size: 150%;
     font-family: inherit;
     color: darkgrey;
     
