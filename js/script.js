@@ -1,8 +1,8 @@
 window.addEventListener("load" , function () {
-    addPics (document.getElementById('fotos'));
+    // vincent munier pics: addPics (document.getElementById('fotos'));
     });
 
-const addPics = function(ctr) {
+const addPics = function(ctr) { //vincent munier pics le chant des forets
     var myUrls = [];
     for (i=1; i < 144; i++) {
         myUrls.push(`https://www.vincentmunier.com/wp-content/uploads/2025/12/CDF${i.toString().padStart(3,'0')}.jpg`);
