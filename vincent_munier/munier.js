@@ -1,5 +1,5 @@
 window.addEventListener("load" , function () {
-    // vincent munier pics: addPics (document.getElementById('fotos'));
+    addPics (document.getElementById('fotos'));
     });
 
 const addPics = function(ctr) { //vincent munier pics le chant des forets
