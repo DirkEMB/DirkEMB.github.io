@@ -1,4 +1,10 @@
 window.addEventListener("load" , function () {
+    document.getElementsByName("img_size").forEach(my_el => {
+    my_el.addEventListener("change", function () {
+    var r = document.querySelector(':root');
+    r.style.setProperty('--image-width',this.value);
+    });
+});
     addPics (document.getElementById('fotos'));
     });
 
@@ -13,3 +19,4 @@ const addPics = function(ctr) { //vincent munier pics le chant des forets
        ctr.appendChild(myImg);
     });
 };
+

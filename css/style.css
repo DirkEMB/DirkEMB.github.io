@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Google+Sans+Code:ital,wght@0,300..800;1,300..800&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 
+:root {
+    --image-width: 23%;
+}
+
 body {
     font-family: 'Noto Sants', sans-serif;
     font-weight: 300;
@@ -30,4 +34,10 @@ article>h1 {
     font-family: inherit;
     color: darkgrey;
     
+}
+
+#fotos>img {
+    width: var(--image-width);
+    margin: 1%;
+    vertical-align: middle;
 }
