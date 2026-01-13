@@ -14,14 +14,17 @@
                 widgetcode: "siqbda4f739db87c970f1dbdeb40d8dff74e2dc059463173b0ead67fa148a5992c7",
                 visitorinfo: {
                     "driver_id": 8993
-                }
+                },
+                department: 'es_support'
+                
             }
             var $zoho=$zoho || {};
             $zoho.salesiq = $zoho.salesiq || {
                 widgetcode:config.widgetcode, 
                 values:{},
                 ready:function(){
-                    $zoho.salesiq.visitor.info(config.visitorinfo); 
+                    ZohoSalesIQ.setDepartment(departmentName: config.department)
+                    // $zoho.salesiq.visitor.info(config.visitorinfo); 
                     $zoho.salesiq.chatwindow.visible("show");
                     }
                 };
