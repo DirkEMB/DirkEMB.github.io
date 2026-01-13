@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,24 +7,20 @@
         <link rel="stylesheet" href="styles.css" />
     </head>
     <body>
-        <div id="reference">es_driver vX.Y</div>
-        <div id="xy"></div>
+        <div id="reference">Soporte drivers Catcher ES</div>
         <script type="text/javascript">
             var config = {
                 widgetcode: "siqbda4f739db87c970f1dbdeb40d8dff74e2dc059463173b0ead67fa148a5992c7",
-                visitorinfo: {
-                    "driver_id": 8993
-                },
                 department: 'es_support'
-                
+
             }
             var $zoho=$zoho || {};
             $zoho.salesiq = $zoho.salesiq || {
-                widgetcode:config.widgetcode, 
+                widgetcode:config.widgetcode,
                 values:{},
                 ready:function(){
-                    $zoho.salesiq.setDepartment(config.department);
-                    // $zoho.salesiq.visitor.info(config.visitorinfo); 
+                    $zoho.salesiq.chat.department(config.department);
+                    // $zoho.salesiq.visitor.info(config.visitorinfo);
                     $zoho.salesiq.chatwindow.visible("show");
                     }
                 };
@@ -38,7 +34,7 @@
             t.parentNode.insertBefore(s,t);
             d.write("<div id='zsiqwidget'></div>");
         </script>
-        
-        
+
+
     </body>
 </html>
