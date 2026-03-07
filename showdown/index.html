@@ -10,7 +10,8 @@
     <textarea id="sourceTA" rows="10" cols="80"></textarea>
     <button id="runBtn">Convert</button>
     <div id="targetDiv"></div>
-
+    <pre><code id="htmlDiv"></code></pre>
+    <a id="downloadLink">download</a>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/2.1.0/showdown.min.js" integrity="sha512-LhccdVNGe2QMEfI3x4DVV3ckMRe36TfydKss6mJpdHjNFiV07dFpS2xzeZedptKZrwxfICJpez09iNioiSZ3hA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
         document.getElementById('runBtn').onclick = function() {
@@ -18,6 +19,14 @@
             var converter = new showdown.Converter({tables: true});
             var html = converter.makeHtml(text);
             document.getElementById('targetDiv').innerHTML = html;
+            document.getElementById('htmlDiv').innerHTML = html.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
+            let blob = new Blob([html], {type: 'text/plain'});
+            let blob_url = URL.createObjectURL(blob);
+            let my_link = document.getElementById('downloadLink');
+            my_link.href = blob_url;
+            my_link.download = 'from_md.html';
+
+
         };
     </script>
 </body>
