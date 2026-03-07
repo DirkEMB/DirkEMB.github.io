@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Showdown Example</title>
+</head>
+<body>
+    <textarea id="sourceTA" rows="10" cols="80"></textarea>
+    <button id="runBtn">Convert</button>
+    <div id="targetDiv"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/2.1.0/showdown.min.js" integrity="sha512-LhccdVNGe2QMEfI3x4DVV3ckMRe36TfydKss6mJpdHjNFiV07dFpS2xzeZedptKZrwxfICJpez09iNioiSZ3hA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        document.getElementById('runBtn').onclick = function() {
+            var text = document.getElementById('sourceTA').value;
+            var converter = new showdown.Converter({tables: true});
+            var html = converter.makeHtml(text);
+            document.getElementById('targetDiv').innerHTML = html;
+        };
+    </script>
+</body>
+</html>
