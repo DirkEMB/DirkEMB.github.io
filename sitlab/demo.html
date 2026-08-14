@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Extractor · Informe de Situación Laboral</title>
+<style>
+  :root {
+    --ink: #1c2230;
+    --muted: #5b6472;
+    --line: #dde1e7;
+    --ok: #1a7f4e;
+    --ok-bg: #eaf7f0;
+    --bad: #b3261e;
+    --bad-bg: #fceeed;
+    --accent: #2954a6;
+    --bg: #f7f8fa;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    padding: 32px 16px 64px;
+  }
+  main {
+    max-width: 760px;
+    margin: 0 auto;
+  }
+  h1 {
+    font-size: 22px;
+    margin-bottom: 4px;
+  }
+  p.lead {
+    color: var(--muted);
+    margin-top: 0;
+    font-size: 14px;
+  }
+  .dropzone {
+    border: 2px dashed var(--line);
+    border-radius: 12px;
+    background: #fff;
+    padding: 28px;
+    text-align: center;
+    margin: 20px 0;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .dropzone.dragover {
+    border-color: var(--accent);
+    background: #eef2fb;
+  }
+  .dropzone input[type="file"] {
+    display: none;
+  }
+  .dropzone label {
+    display: inline-block;
+    padding: 9px 16px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  .dropzone .hint {
+    display: block;
+    margin-top: 10px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  #status {
+    font-size: 14px;
+    color: var(--muted);
+    margin: 8px 0 20px;
+    min-height: 20px;
+  }
+  .card {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin-bottom: 14px;
+  }
+  .card h2 {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    margin: 0 0 10px;
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 999px;
+  }
+  .badge.ok { background: var(--ok-bg); color: var(--ok); }
+  .badge.bad { background: var(--bad-bg); color: var(--bad); }
+  ul.issues {
+    margin: 10px 0 0;
+    padding-left: 18px;
+    color: var(--bad);
+    font-size: 13px;
+  }
+  table.fields {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  table.fields td {
+    padding: 6px 4px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+  table.fields td:first-child {
+    color: var(--muted);
+    width: 38%;
+    white-space: nowrap;
+  }
+  table.fields td:last-child {
+    font-variant-numeric: tabular-nums;
+  }
+  code {
+    background: #f1f3f6;
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-size: 13px;
+  }
+  details {
+    margin-top: 6px;
+  }
+  details summary {
+    cursor: pointer;
+    font-size: 13px;
+    color: var(--accent);
+  }
+  pre {
+    background: #10141d;
+    color: #d7dde6;
+    padding: 14px;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-size: 12.5px;
+    line-height: 1.5;
+  }
+  .empty {
+    color: var(--muted);
+    font-style: italic;
+  }
+</style>
+</head>
+<body>
+<main>
+  <h1>Extractor de Informe de Situación Laboral</h1>
+  <p class="lead">Runs entirely in your browser — the PDF is never uploaded anywhere.</p>
+
+  <div class="dropzone" id="dropzone">
+    <input type="file" id="pdfInput" accept="application/pdf" />
+    <label for="pdfInput">Elegir PDF…</label>
+    <span class="hint">o arrastra y suelta un PDF aquí</span>
+  </div>
+
+  <div id="status"></div>
+  <div id="results"></div>
+</main>
+
+<script type="module">
+  // Load pdf.js from a CDN mirror of the exact npm package (jsDelivr serves
+  // npm packages verbatim, so this is the real pdfjs-dist@4.10.38 build).
+  import * as pdfjsLib from "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/build/pdf.mjs";
+  pdfjsLib.GlobalWorkerOptions.workerSrc =
+    "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/build/pdf.worker.mjs";
+
+  import { extractInformeSituacionLaboral } from "./informe-extractor.js";
+
+  const dropzone = document.getElementById("dropzone");
+  const input = document.getElementById("pdfInput");
+  const statusEl = document.getElementById("status");
+  const resultsEl = document.getElementById("results");
+
+  input.addEventListener("change", () => {
+    if (input.files[0]) handleFile(input.files[0]);
+  });
+
+  ["dragover", "dragenter"].forEach((evt) =>
+    dropzone.addEventListener(evt, (e) => {
+      e.preventDefault();
+      dropzone.classList.add("dragover");
+    })
+  );
+  ["dragleave", "drop"].forEach((evt) =>
+    dropzone.addEventListener(evt, (e) => {
+      e.preventDefault();
+      dropzone.classList.remove("dragover");
+    })
+  );
+  dropzone.addEventListener("drop", (e) => {
+    const file = e.dataTransfer.files[0];
+    if (file) handleFile(file);
+  });
+
+  async function handleFile(file) {
+    resultsEl.innerHTML = "";
+    statusEl.textContent = `Procesando "${file.name}"…`;
+    try {
+      const result = await extractInformeSituacionLaboral(pdfjsLib, file);
+      statusEl.textContent = "";
+      render(result);
+    } catch (err) {
+      console.error(err);
+      statusEl.textContent = "";
+      resultsEl.innerHTML = `<div class="card"><span class="badge bad">Error</span><p>${escapeHtml(
+        String(err.message || err)
+      )}</p></div>`;
+    }
+  }
+
+  function escapeHtml(s) {
+    return s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  }
+
+  function render(result) {
+    const v = result.validation;
+    const validationCard = `
+      <div class="card">
+        <h2>Validación del documento</h2>
+        <span class="badge ${v.isValid ? "ok" : "bad"}">
+          ${v.isValid ? "✓ Parece un informe oficial válido" : "✗ No pasó la validación"}
+        </span>
+        <table class="fields" style="margin-top:12px;">
+          <tr><td>Título "SITUACIÓN ACTUAL"</td><td>${v.titleFound ? "Encontrado" : "No encontrado"}</td></tr>
+          <tr><td>Logos detectados en cabecera</td><td>${v.logos.count} (izquierda: ${v.logos.leftLogoFound ? "sí" : "no"}, derecha: ${v.logos.rightLogoFound ? "sí" : "no"})</td></tr>
+        </table>
+        ${v.issues.length ? `<ul class="issues">${v.issues.map((i) => `<li>${escapeHtml(i)}</li>`).join("")}</ul>` : ""}
+      </div>`;
+
+    const fieldsCard = `
+      <div class="card">
+        <h2>Datos extraídos</h2>
+        <table class="fields">
+          <tr><td>Nombre</td><td>${result.name ? escapeHtml(result.name) : '<span class="empty">no encontrado</span>'}</td></tr>
+          <tr><td>NIF/NIE</td><td>${result.nif ? `${result.nif.type}: <code>${result.nif.value}</code>` : '<span class="empty">no encontrado</span>'}</td></tr>
+          <tr><td>Fecha del informe</td><td>${result.reportDate ? `${result.reportDate.text} (${result.reportDate.iso})` : '<span class="empty">no encontrada</span>'}</td></tr>
+          <tr><td>Autónomo en alta</td><td>${
+            result.autonomoAlta.found
+              ? result.autonomoAlta.entries.map((e) => `Sí — fecha de situación <code>${e.fechaSituacion}</code>`).join("<br/>")
+              : "No"
+          }</td></tr>
+          <tr><td>Id. CEA</td><td>${result.referenciasElectronicas ? `<code>${result.referenciasElectronicas.idCea}</code>` : '<span class="empty">no encontrado</span>'}</td></tr>
+          <tr><td>Fecha (referencias)</td><td>${result.referenciasElectronicas ? result.referenciasElectronicas.fecha : '<span class="empty">no encontrada</span>'}</td></tr>
+          <tr><td>Código CEA</td><td>${result.referenciasElectronicas ? `<code>${result.referenciasElectronicas.codigoCea}</code>` : '<span class="empty">no encontrado</span>'}</td></tr>
+        </table>
+        <details>
+          <summary>Ver JSON completo</summary>
+          <pre>${escapeHtml(JSON.stringify(result, null, 2))}</pre>
+        </details>
+      </div>`;
+
+    resultsEl.innerHTML = validationCard + fieldsCard;
+  }
+</script>
+</body>
+</html>
