@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shopping List</title>
+<style>
+  :root {
+    --bg: #f7f7f8;
+    --card: #ffffff;
+    --text: #1c1c1e;
+    --muted: #8a8a8e;
+    --border: #e5e5e7;
+    --accent: #2f6feb;
+    --accent-contrast: #ffffff;
+    --danger: #d64545;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 24px 16px 80px;
+  }
+  .app {
+    width: 100%;
+    max-width: 440px;
+  }
+  h1 {
+    font-size: 22px;
+    font-weight: 600;
+    margin: 0 0 4px;
+  }
+  .subtitle {
+    font-size: 13px;
+    color: var(--muted);
+    margin: 0 0 20px;
+  }
+  .subtitle button {
+    background: none;
+    border: none;
+    color: var(--accent);
+    font-size: 13px;
+    padding: 0;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  form#add-form {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  input[type="text"] {
+    flex: 1;
+    padding: 12px 14px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 15px;
+    background: var(--card);
+    color: var(--text);
+  }
+  input[type="text"]:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+  button {
+    font-family: inherit;
+  }
+  #add-form button {
+    padding: 12px 18px;
+    border: none;
+    border-radius: 10px;
+    background: var(--accent);
+    color: var(--accent-contrast);
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  #add-form button:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+  .toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    min-height: 20px;
+  }
+  #refresh-btn {
+    border: none;
+    background: none;
+    color: var(--muted);
+    font-size: 13px;
+    cursor: pointer;
+    padding: 4px 0;
+  }
+  #refresh-btn:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+  #clear-bought-btn {
+    border: none;
+    background: none;
+    color: var(--danger);
+    font-size: 13px;
+    cursor: pointer;
+    padding: 4px 0;
+  }
+  #clear-bought-btn:disabled {
+    display: none;
+  }
+  ul#list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    background: var(--card);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+  li.item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  li.item:last-child {
+    border-bottom: none;
+  }
+  li.item input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    margin-top: 2px;
+    flex-shrink: 0;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+  .item-body {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 6px;
+    cursor: default;
+  }
+  .item-name {
+    font-size: 15px;
+    word-break: break-word;
+  }
+  .item-meta {
+    font-size: 12px;
+    color: var(--muted);
+    white-space: nowrap;
+    display: none;
+  }
+  li.item:hover .item-meta,
+  li.item.show-meta .item-meta {
+    display: inline;
+  }
+  li.item.marked .item-name {
+    text-decoration: line-through;
+    color: var(--muted);
+  }
+  .empty-state, .status-line {
+    text-align: center;
+    color: var(--muted);
+    font-size: 14px;
+    padding: 24px 12px;
+  }
+  .status-line.error {
+    color: var(--danger);
+  }
+
+  /* First-run name modal */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    z-index: 10;
+  }
+  .modal-box {
+    background: var(--card);
+    border-radius: 14px;
+    padding: 24px;
+    width: 100%;
+    max-width: 340px;
+  }
+  .modal-box h2 {
+    font-size: 17px;
+    margin: 0 0 8px;
+  }
+  .modal-box p {
+    font-size: 13px;
+    color: var(--muted);
+    margin: 0 0 16px;
+  }
+  .modal-box input[type="text"] {
+    width: 100%;
+    margin-bottom: 12px;
+  }
+  .modal-box button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    background: var(--accent);
+    color: var(--accent-contrast);
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <h1>Shopping List</h1>
+  <p class="subtitle">
+    Signed in as <strong id="user-name-label"></strong>
+    &middot; <button id="change-name-btn" type="button">change name</button>
+  </p>
+
+  <form id="add-form">
+    <input type="text" id="new-item-input" placeholder="Add an item…" autocomplete="off" maxlength="200">
+    <button type="submit" id="add-btn">Add</button>
+  </form>
+
+  <div class="toolbar">
+    <button id="refresh-btn" type="button" title="Refresh list">Refresh</button>
+    <button id="clear-bought-btn" type="button" disabled>Delete bought items</button>
+  </div>
+
+  <div id="status-line" class="status-line hidden"></div>
+
+  <ul id="list"></ul>
+
+  <p id="empty-state" class="empty-state hidden">Your list is empty. Add something above.</p>
+</div>
+
+<div id="name-modal" class="modal-overlay hidden">
+  <div class="modal-box">
+    <h2>What's your name?</h2>
+    <p>We'll remember this on this device so items you add are attributed to you.</p>
+    <form id="name-form">
+      <input type="text" id="name-input" placeholder="e.g. dirk" maxlength="60" autocomplete="off">
+      <button type="submit">Save</button>
+    </form>
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  // ---------------------------------------------------------------------
+  // CONFIG — Retool webhook endpoints
+  // ---------------------------------------------------------------------
+  var CONFIG = {
+    // GET -> array of {id, item, ts_create, created_by, marked}
+    LIST_URL: "https://dirkbogaert.retool.com/url/list",
+
+    // POST {item, created_by} -> new row created server-side.
+    // Response shape isn't relied on; we re-fetch LIST_URL after a
+    // successful add to get the authoritative row (id, ts_create, etc).
+    ADD_URL: "https://dirkbogaert.retool.com/url/list_item/add",
+
+    // GET, with {id} and {marked} substituted into the path
+    // (marked is the literal string "true" or "false").
+    MARK_URL: "https://dirkbogaert.retool.com/url/list_item/{id}/mark/{marked}",
+
+    // GET, no payload — deletes every item currently marked on the server.
+    DELETE_URL: "https://dirkbogaert.retool.com/url/list/delete_marked"
+  };
+
+  var REFRESH_INTERVAL_MS = 30000;
+  var LONG_PRESS_MS = 500;
+  var STORAGE_KEY = "shoppingList.createdBy";
+
+  // ---------------------------------------------------------------------
+  // State
+  // ---------------------------------------------------------------------
+  var items = [];        // shape: {id, item, ts_create, created_by, marked}
+  var createdBy = null;  // this device's name, from localStorage
+  var refreshTimer = null;
+
+  // ---------------------------------------------------------------------
+  // DOM refs
+  // ---------------------------------------------------------------------
+  var el = {
+    userNameLabel: document.getElementById("user-name-label"),
+    changeNameBtn: document.getElementById("change-name-btn"),
+    addForm: document.getElementById("add-form"),
+    newItemInput: document.getElementById("new-item-input"),
+    addBtn: document.getElementById("add-btn"),
+    refreshBtn: document.getElementById("refresh-btn"),
+    clearBoughtBtn: document.getElementById("clear-bought-btn"),
+    statusLine: document.getElementById("status-line"),
+    list: document.getElementById("list"),
+    emptyState: document.getElementById("empty-state"),
+    nameModal: document.getElementById("name-modal"),
+    nameForm: document.getElementById("name-form"),
+    nameInput: document.getElementById("name-input")
+  };
+
+  // ---------------------------------------------------------------------
+  // Name capture (first use on this device)
+  // ---------------------------------------------------------------------
+  function getStoredName() {
+    return localStorage.getItem(STORAGE_KEY) || "";
+  }
+
+  function setStoredName(name) {
+    localStorage.setItem(STORAGE_KEY, name);
+    createdBy = name;
+    el.userNameLabel.textContent = name;
+  }
+
+  function ensureName() {
+    var stored = getStoredName();
+    if (stored) {
+      createdBy = stored;
+      el.userNameLabel.textContent = stored;
+      return;
+    }
+    showNameModal();
+  }
+
+  function showNameModal(prefill) {
+    el.nameInput.value = prefill || "";
+    el.nameModal.classList.remove("hidden");
+    setTimeout(function () { el.nameInput.focus(); }, 0);
+  }
+
+  function hideNameModal() {
+    el.nameModal.classList.add("hidden");
+  }
+
+  el.nameForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var name = el.nameInput.value.trim();
+    if (!name) return;
+    setStoredName(name);
+    hideNameModal();
+  });
+
+  el.changeNameBtn.addEventListener("click", function () {
+    showNameModal(getStoredName());
+  });
+
+  // ---------------------------------------------------------------------
+  // Status line helper
+  // ---------------------------------------------------------------------
+  function setStatus(message, isError) {
+    if (!message) {
+      el.statusLine.classList.add("hidden");
+      el.statusLine.textContent = "";
+      return;
+    }
+    el.statusLine.textContent = message;
+    el.statusLine.classList.remove("hidden");
+    el.statusLine.classList.toggle("error", !!isError);
+  }
+
+  // ---------------------------------------------------------------------
+  // Long-press support (mobile) — hover already reveals meta on desktop
+  // ---------------------------------------------------------------------
+  function attachLongPress(li) {
+    var timer = null;
+    var fired = false;
+
+    function start() {
+      fired = false;
+      timer = setTimeout(function () {
+        fired = true;
+        // Long-pressing again toggles it back off.
+        li.classList.toggle("show-meta");
+      }, LONG_PRESS_MS);
+    }
+
+    function cancel() {
+      if (timer) {
+        clearTimeout(timer);
+        timer = null;
+      }
+    }
+
+    li.addEventListener("touchstart", start, { passive: true });
+    li.addEventListener("touchend", cancel);
+    li.addEventListener("touchmove", cancel);
+    li.addEventListener("touchcancel", cancel);
+  }
+
+  // Tapping/clicking anywhere outside an item hides any revealed meta.
+  document.addEventListener("click", function (e) {
+    var openItems = el.list.querySelectorAll("li.item.show-meta");
+    openItems.forEach(function (li) {
+      if (!li.contains(e.target)) {
+        li.classList.remove("show-meta");
+      }
+    });
+  });
+
+  // ---------------------------------------------------------------------
+  // Rendering
+  // ---------------------------------------------------------------------
+  function formatTime(iso) {
+    if (!iso) return "";
+    var d = new Date(iso);
+    if (isNaN(d.getTime())) return "";
+    return d.toLocaleString(undefined, {
+      month: "short", day: "numeric", hour: "2-digit", minute: "2-digit"
+    });
+  }
+
+  function render() {
+    el.list.innerHTML = "";
+
+    if (items.length === 0) {
+      el.emptyState.classList.remove("hidden");
+    } else {
+      el.emptyState.classList.add("hidden");
+    }
+
+    // Keep server order — bought items stay in place, just styled differently.
+    items.forEach(function (it) {
+      var li = document.createElement("li");
+      li.className = "item" + (it.marked ? " marked" : "");
+      li.dataset.id = it.id;
+
+      var checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.checked = !!it.marked;
+      checkbox.addEventListener("change", function () {
+        toggleMarked(it.id, checkbox.checked);
+      });
+
+      var body = document.createElement("div");
+      body.className = "item-body";
+
+      // Only the item name is shown by default. created_by / ts_create
+      // reveal on hover (desktop) or long-press (touch) — see CSS
+      // ".item-meta" and attachLongPress() below.
+      var name = document.createElement("span");
+      name.className = "item-name";
+      name.textContent = it.item;
+
+      var meta = document.createElement("span");
+      meta.className = "item-meta";
+      meta.textContent = (it.created_by || "unknown") + " · " + formatTime(it.ts_create);
+
+      body.appendChild(name);
+      body.appendChild(meta);
+
+      li.appendChild(checkbox);
+      li.appendChild(body);
+      attachLongPress(li);
+      el.list.appendChild(li);
+    });
+
+    var boughtCount = items.filter(function (it) { return it.marked; }).length;
+    el.clearBoughtBtn.disabled = boughtCount === 0;
+    el.clearBoughtBtn.textContent = boughtCount > 0
+      ? "Delete bought items (" + boughtCount + ")"
+      : "Delete bought items";
+  }
+
+  // ---------------------------------------------------------------------
+  // API layer
+  // ---------------------------------------------------------------------
+  function fetchList(opts) {
+    var silent = opts && opts.silent;
+    if (!silent) setStatus("Loading…");
+
+    return fetch(CONFIG.LIST_URL)
+      .then(function (res) {
+        if (!res.ok) throw new Error("Request failed (" + res.status + ")");
+        return res.json();
+      })
+      .then(function (data) {
+        items = Array.isArray(data) ? data : [];
+        setStatus(null);
+        render();
+      })
+      .catch(function (err) {
+        console.error("Failed to load list:", err);
+        setStatus("Couldn't load the list. Try refreshing.", true);
+      });
+  }
+
+  function addItem(itemName) {
+    var optimistic = {
+      id: "tmp-" + Date.now(),   // replaced once we refresh from the server
+      item: itemName,
+      created_by: createdBy,
+      ts_create: new Date().toISOString(),
+      marked: false
+    };
+
+    items.push(optimistic);
+    render();
+
+    fetch(CONFIG.ADD_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ item: itemName, created_by: createdBy })
+    })
+      .then(function (res) {
+        if (!res.ok) throw new Error("Request failed (" + res.status + ")");
+        // Response shape from this webhook isn't guaranteed, so just
+        // re-fetch the authoritative list rather than parsing a created
+        // row out of it.
+        return fetchList({ silent: true });
+      })
+      .catch(function (err) {
+        console.error("Failed to save new item:", err);
+        setStatus("Item added locally, but saving to the server failed.", true);
+      });
+  }
+
+  function toggleMarked(id, marked) {
+    var it = items.find(function (i) { return i.id === id; });
+    if (!it) return;
+    it.marked = marked;
+    render();
+
+    var url = CONFIG.MARK_URL
+      .replace("{id}", encodeURIComponent(id))
+      .replace("{marked}", marked ? "true" : "false");
+
+    fetch(url)
+      .then(function (res) {
+        if (!res.ok) throw new Error("Request failed (" + res.status + ")");
+        return fetchList({ silent: true });
+      })
+      .catch(function (err) {
+        console.error("Failed to save marked state:", err);
+        setStatus("Change saved locally, but syncing to the server failed.", true);
+      });
+  }
+
+  function deleteBoughtItems() {
+    var boughtCount = items.filter(function (it) { return it.marked; }).length;
+    if (boughtCount === 0) return;
+
+    var confirmed = window.confirm(
+      "Delete " + boughtCount + " bought item" + (boughtCount === 1 ? "" : "s") + "? This can't be undone."
+    );
+    if (!confirmed) return;
+
+    items = items.filter(function (it) { return !it.marked; });
+    render();
+
+    fetch(CONFIG.DELETE_URL)
+      .then(function (res) {
+        if (!res.ok) throw new Error("Request failed (" + res.status + ")");
+        return fetchList({ silent: true });
+      })
+      .catch(function (err) {
+        console.error("Failed to delete bought items on server:", err);
+        setStatus("Removed locally, but deleting on the server failed.", true);
+      });
+  }
+
+  // ---------------------------------------------------------------------
+  // Auto-refresh
+  // ---------------------------------------------------------------------
+  function startAutoRefresh() {
+    if (refreshTimer) clearInterval(refreshTimer);
+    refreshTimer = setInterval(function () {
+      fetchList({ silent: true });
+    }, REFRESH_INTERVAL_MS);
+  }
+
+  // ---------------------------------------------------------------------
+  // Event wiring
+  // ---------------------------------------------------------------------
+  el.addForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var value = el.newItemInput.value.trim();
+    if (!value) return;
+    addItem(value);
+    el.newItemInput.value = "";
+    el.newItemInput.focus();
+  });
+
+  el.clearBoughtBtn.addEventListener("click", deleteBoughtItems);
+
+  el.refreshBtn.addEventListener("click", function () {
+    fetchList();
+  });
+
+  // ---------------------------------------------------------------------
+  // Init
+  // ---------------------------------------------------------------------
+  ensureName();
+  fetchList();
+  startAutoRefresh();
+})();
+</script>
+
+</body>
+</html>
