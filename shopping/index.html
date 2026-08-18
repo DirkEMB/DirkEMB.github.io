@@ -287,6 +287,7 @@
   };
 
   var REFRESH_INTERVAL_MS = 30000;
+  var AUTO_REFRESH = false;
   var LONG_PRESS_MS = 500;
   var STORAGE_KEY = "shoppingList.createdBy";
 
@@ -579,10 +580,11 @@
   // Auto-refresh
   // ---------------------------------------------------------------------
   function startAutoRefresh() {
+    if (AUTO_REFRESH) {
     if (refreshTimer) clearInterval(refreshTimer);
     refreshTimer = setInterval(function () {
       fetchList({ silent: true });
-    }, REFRESH_INTERVAL_MS);
+    }, REFRESH_INTERVAL_MS);}
   }
 
   // ---------------------------------------------------------------------
